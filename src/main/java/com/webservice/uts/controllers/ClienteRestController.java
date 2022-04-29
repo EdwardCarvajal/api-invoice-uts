@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -44,11 +45,13 @@ public class ClienteRestController {
 		return clienteService.findAll();	
 	}
 	
+	@Secured({"ROLE_ADMIN","ROLE_USER"})
 	@GetMapping("/cliente/{id}")
 	public Cliente show(@PathVariable Long id){
 		return clienteService.findById(id);
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping("/clientes")
 	public ResponseEntity<?> create(@Valid @RequestBody Cliente cliente, BindingResult result){
 		
@@ -84,6 +87,7 @@ public class ClienteRestController {
 		
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@PutMapping("/cliente/{id}")	
 	public ResponseEntity<?> update(@Valid @RequestBody Cliente cliente,BindingResult result,@PathVariable  Long id){
 		
@@ -129,6 +133,7 @@ public class ClienteRestController {
 		
 	}
 	
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/clientes/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public ResponseEntity<?> delete(@PathVariable Long id){
@@ -150,7 +155,7 @@ public class ClienteRestController {
 		
 	}
 	
-
+	@Secured("ROLE_ADMIN")
 	@GetMapping("/clientes/regiones")
 	public List<Region> listarRegiones(){
 		return clienteService.findAllRegiones();

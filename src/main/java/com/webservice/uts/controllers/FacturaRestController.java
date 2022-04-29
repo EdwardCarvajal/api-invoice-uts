@@ -1,5 +1,4 @@
 package com.webservice.uts.controllers;
-
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +17,7 @@ import com.webservice.uts.models.entites.Producto;
 import com.webservice.uts.models.services.IClienteService;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.annotation.Secured;
 
 
 
@@ -29,7 +29,7 @@ public class FacturaRestController {
 	@Autowired
 	private IClienteService clienteService;
 	
-	
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@GetMapping("/facturas/{id}")
 	@ResponseStatus(HttpStatus.OK)
 	public Factura show(@PathVariable Long id) {
@@ -37,28 +37,28 @@ public class FacturaRestController {
 	}
 
 	
-	
+	@Secured({"ROLE_ADMIN", "ROLE_USER"})
 	@GetMapping("/facturas")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Factura> index() {
 		return clienteService.findFacturaAll();
 	}
 	
-	
+	@Secured({"ROLE_ADMIN"})
 	@DeleteMapping("/facturas/{id}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void delete(@PathVariable Long id) {
 		clienteService.deleteFacturaById(id);
 	}
 	
-	
+	@Secured({"ROLE_ADMIN"})
 	@GetMapping("/facturas/filtrar-productos/{term}")
 	@ResponseStatus(HttpStatus.OK)
 	public List<Producto> filtrarProductos(@PathVariable String term){
 		return clienteService.findProductoByNombre(term);
 	}
 	
-	
+	@Secured({"ROLE_ADMIN"})
 	@PostMapping("/facturas")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Factura crear(@RequestBody Factura factura) {
